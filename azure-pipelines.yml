@@ -20,12 +20,20 @@ jobs:
     vmImage: 'windows-latest'
 
   steps:
+  - powershell: |
+      nuget sources -verbosity detailed
+    displayName: 'NuGet sources 1'
+
   - task: UseDotNet@2
-    displayName: 'Install .NET Core SDK 5.x (Global Tools error workaround)'
+    displayName: 'Install .NET Core SDK 5.x'
     inputs:
       packageType: sdk
       version: 5.x
       installationPath: $(Agent.ToolsDirectory)/dotnet  
+
+  - powershell: |
+      nuget sources -verbosity detailed
+    displayName: 'NuGet sources 2'
 
   - powershell: |
       Get-ChildItem $HOME -r
