@@ -15,10 +15,19 @@ resources:
       endpoint: github.com_idg10
 
 jobs:
-- template: templates/build.and.release.yml@recommended_practices
-  parameters:
+- job: Build
+  pool:
     vmImage: 'windows-latest'
-    service_connection_nuget_org: $(Idg10_Service_Connection_NuGet_Org)
-    service_connection_github: $(Idg10_Service_Connection_GitHub)
-    solution_to_build: $(Idg_Solution_To_Build)
-    netSdkVersion: '3.x'
+
+  steps:
+  - powershell: |
+      Get-ChildItem $HOME -r -r
+    displayName: 'Dump home folder'
+
+# - template: templates/build.and.release.yml@recommended_practices
+#   parameters:
+#     vmImage: 'windows-latest'
+#     service_connection_nuget_org: $(Idg10_Service_Connection_NuGet_Org)
+#     service_connection_github: $(Idg10_Service_Connection_GitHub)
+#     solution_to_build: $(Idg_Solution_To_Build)
+#     netSdkVersion: '3.x'
