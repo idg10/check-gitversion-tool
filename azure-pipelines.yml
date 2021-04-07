@@ -21,7 +21,7 @@ jobs:
 
   steps:
   - powershell: |
-      Get-ChildItem $HOME -r -r
+      Get-ChildItem $HOME -r
     displayName: 'Dump home folder'
 
 # - template: templates/build.and.release.yml@recommended_practices
