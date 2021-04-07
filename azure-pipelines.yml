@@ -20,9 +20,9 @@ jobs:
     vmImage: 'windows-latest'
 
   steps:
-  - powershell: |
-      nuget sources -verbosity detailed
-    displayName: 'NuGet sources 1'
+  # - powershell: |
+  #     nuget sources -verbosity detailed
+  #   displayName: 'NuGet sources 1'
 
   - task: UseDotNet@2
     displayName: 'Install .NET Core SDK 5.x'
@@ -31,9 +31,9 @@ jobs:
       version: 5.x
       installationPath: $(Agent.ToolsDirectory)/dotnet  
 
-  # - powershell: |
-  #     nuget sources -verbosity detailed
-  #   displayName: 'NuGet sources 2'
+  - powershell: |
+      nuget sources -verbosity detailed
+    displayName: 'NuGet sources 2'
 
   - powershell: |
       Get-ChildItem $HOME -r
