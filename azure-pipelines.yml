@@ -31,9 +31,9 @@ jobs:
       version: 5.x
       installationPath: $(Agent.ToolsDirectory)/dotnet  
 
-  - powershell: |
-      nuget sources -verbosity detailed
-    displayName: 'NuGet sources 2'
+  # - powershell: |
+  #     nuget sources -verbosity detailed
+  #   displayName: 'NuGet sources 2'
 
   - powershell: |
       Get-ChildItem $HOME -r
