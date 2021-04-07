@@ -20,15 +20,6 @@ jobs:
     vmImage: 'windows-latest'
 
   steps:
-  # Using dotnet install doesn't work unless NuGet has done some sort of initial
-  # setup step. Apparently just running it works, but it's probably best to declare
-  # that we want NuGet.
-  - task: NuGetToolInstaller@1
-
-  # - powershell: |
-  #     nuget sources -verbosity detailed
-  #   displayName: 'NuGet sources 1'
-
   - task: UseDotNet@2
     displayName: 'Install .NET Core SDK 5.x'
     inputs:
@@ -36,9 +27,9 @@ jobs:
       version: 5.x
       installationPath: $(Agent.ToolsDirectory)/dotnet  
 
-  # - powershell: |
-  #     nuget sources -verbosity detailed
-  #   displayName: 'NuGet sources 2'
+  - powershell: |
+      nuget sources
+    displayName: 'NuGet sources 2'
 
   # - powershell: |
   #     Get-ChildItem $HOME -r
