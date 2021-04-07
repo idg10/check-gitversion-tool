@@ -38,9 +38,9 @@ jobs:
       custom: 'tool'
       arguments: 'install -g GitVersion.Tool --version 5.6.6'
 
-- script: 'dotnet-gitversion /output buildserver /nofetch'
-  name: 'RunGitVersion'
-  displayName: 'Run GitVersion'
+  - script: 'dotnet-gitversion /output buildserver /nofetch'
+    name: 'RunGitVersion'
+    displayName: 'Run GitVersion'
 # - template: templates/build.and.release.yml@recommended_practices
 #   parameters:
 #     vmImage: 'windows-latest'
