@@ -29,6 +29,7 @@ jobs:
 
   - powershell: |
       nuget sources
+      dotnet --info
     displayName: 'NuGet sources 2'
 
   # - powershell: |
