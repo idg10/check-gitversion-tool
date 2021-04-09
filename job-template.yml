@@ -25,17 +25,22 @@ jobs:
   pool:
     vmImage: ${{ parameters.vmImage }}
 
-  variables:
-    ${{ if and(parameters.sdks, ge(length(parameters.sdks), 0)) }}:
-      sdkList: $[ parameters.sdks ]
-    ${{ if and(not(parameters.sdks), parameters.sdk) }}:
-      sdkList: ["${{ parameters.sdk }}"]
+  # variables:
+  #   ${{ if and(parameters.sdks, ge(length(parameters.sdks), 0)) }}:
+  #     sdkList: $[ parameters.sdks ]
+  #   ${{ if and(not(parameters.sdks), parameters.sdk) }}:
+  #     sdkList: ["${{ parameters.sdk }}"]
 
   steps:
   - template: install-net-runtimes-and-sdks.yml
     parameters:
       runtimes: ${{ parameters.runtimes }}
-      sdks: ${{ variables.sdkList }}
+#      sdks: ${{ variables.sdkList }}
+      ${{ if and(parameters.sdks, ge(length(parameters.sdks), 0)) }}:
+        sdks: ${{ parameters.sdks }}
+      ${{ if and(not(parameters.sdks), parameters.sdk) }}:
+        sdks: ["${{ parameters.sdk }}"]
+
 
   - task: DotNetCoreCLI@2
     displayName: 'Install GitVersion (Global Tools Linux Build Agent Workaround)'
