@@ -17,7 +17,7 @@ steps:
       packageType: 'runtime'
       version: '${{ runtimeVersion }}'
 
-- ${{ each sdkVersion in variables.sdkList }}:
+- ${{ each sdkVersion in parameters.sdks }}:
   - task: UseDotNet@2
     displayName: 'Install .NET Core SDK ${{ sdkVersion }}'
     inputs:
