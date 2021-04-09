@@ -29,7 +29,7 @@ jobs:
     ${{ if parameters.sdks }}:
       sdkList: ${{ parameters.sdks }}
     ${{ if parameters.sdk }}:
-      sdkList: [${{ parameters.sdks }}]
+      sdkList: [${{ parameters.sdk }}]
 
   steps:
   - template: install-net-runtimes-and-sdks.yml
