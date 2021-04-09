@@ -35,7 +35,7 @@ jobs:
   - template: install-net-runtimes-and-sdks.yml
     parameters:
       runtimes: ${{ parameters.runtimes }}
-      sdk: ${{ sdkList }}
+      sdk: ${{ variables.sdkList }}
 
   - task: DotNetCoreCLI@2
     displayName: 'Install GitVersion (Global Tools Linux Build Agent Workaround)'
