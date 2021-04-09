@@ -32,6 +32,17 @@ jobs:
   #     sdkList: ["${{ parameters.sdk }}"]
 
   steps:
+  - powershell: |
+      write-host ${{ parameters.sdk }}
+      write-host $env:t1
+      write-host $env:t2
+      write-host $env:t3
+    env:
+        t1: ${{ parameters.sdk }}
+        t2: "${{ parameters.sdk }}"
+        t3: ["${{ parameters.sdk }}"]
+    displayName: 'Dump parameters'
+
   - template: install-net-runtimes-and-sdks.yml
     parameters:
       runtimes: ${{ parameters.runtimes }}
