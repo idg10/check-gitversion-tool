@@ -35,7 +35,6 @@ jobs:
   - powershell: |
       write-host $env:c1
       write-host $env:c2
-      write-host ${{ parameters.runtimes }}
       write-host $env:r1
       write-host $env:r2
       write-host $env:r3
