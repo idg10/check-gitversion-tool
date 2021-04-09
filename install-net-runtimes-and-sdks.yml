@@ -9,14 +9,14 @@ parameters:
   - 5.x
 
 steps:
-- ${{ each runtimeVersion in parameters.sdks }}:
+- ${{ each runtimeVersion in parameters.runtimes }}:
   - task: UseDotNet@2
     displayName: 'Install .NET runtime ${{ runtimeVersion }}'
     inputs:
       packageType: 'runtime'
       version: '${{ runtimeVersion }}'
 
-- ${{ each sdkVersion in parameters.runtimes }}:
+- ${{ each sdkVersion in parameters.sdks }}:
   - task: UseDotNet@2
     displayName: 'Install .NET Core SDK ${{ sdkVersion }}'
     inputs:
