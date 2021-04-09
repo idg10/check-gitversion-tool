@@ -25,7 +25,7 @@ jobs:
   pool:
     vmImage: ${{ parameters.vmImage }}
 
-   variables:
+  variables:
      SolutionToBuild: Solutions/CheckGitversion.sln
 
   # variables:
