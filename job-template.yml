@@ -27,6 +27,7 @@ jobs:
 
   variables:
      SolutionToBuild: Solutions/CheckGitversion.sln
+     BuildConfiguration: Release
 
   # variables:
   #   ${{ if and(parameters.sdks, ge(length(parameters.sdks), 0)) }}:
