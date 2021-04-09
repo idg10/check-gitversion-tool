@@ -37,10 +37,12 @@ jobs:
       write-host $env:t1
       write-host $env:t2
       write-host $env:t3
+      write-host $env:t4
     env:
         t1: ${{ parameters.sdk }}
         t2: "${{ parameters.sdk }}"
-        t3: ["${{ parameters.sdk }}"]
+        t3: '[${{ parameters.sdk }}]'
+        t3: '["${{ parameters.sdk }}"]'
     displayName: 'Dump parameters'
 
   - template: install-net-runtimes-and-sdks.yml
