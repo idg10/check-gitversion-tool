@@ -33,4 +33,5 @@ jobs:
   parameters:
     vmImage: 'ubuntu-latest'
     runtimes: [2.1.x, 3.1.x]
-    sdk: 5.x
+    sdks: [3.1, 5.x]
+    #sdk: 5.x
