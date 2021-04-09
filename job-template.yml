@@ -33,12 +33,21 @@ jobs:
 
   steps:
   - powershell: |
+      write-host ${{ parameters.runtimes }}
+      write-host $env:r1
+      write-host $env:r2
+      write-host $env:r3
+      write-host $env:r4
       write-host ${{ parameters.sdk }}
       write-host $env:t1
       write-host $env:t2
       write-host $env:t3
       write-host $env:t4
     env:
+        r1: ${{ parameters.runtimes }}
+        r2: "${{ parameters.runtimes }}"
+        r3: '[${{ parameters.runtimes }}]'
+        r4: '["${{ parameters.runtimes }}"]'
         t1: ${{ parameters.sdk }}
         t2: "${{ parameters.sdk }}"
         t3: '[${{ parameters.sdk }}]'
@@ -52,7 +61,7 @@ jobs:
       ${{ if and(parameters.sdks, ge(length(parameters.sdks), 0)) }}:
         sdks: ${{ parameters.sdks }}
       ${{ if not(and(parameters.sdks, ge(length(parameters.sdks), 0))) }}:
-        sdks: ["${{ parameters.sdk }}"]
+        sdks: [${{ parameters.sdk }}]
 
 
   - task: DotNetCoreCLI@2
