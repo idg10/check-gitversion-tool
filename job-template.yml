@@ -27,7 +27,7 @@ jobs:
 
   variables:
     ${{ if and(parameters.sdks, ge(length(parameters.sdks), 0)) }}:
-      sdkList: ${{ parameters.sdks }}
+      sdkList: $[ parameters.sdks ]
     ${{ if and(not(parameters.sdks), parameters.sdk) }}:
       sdkList: ["${{ parameters.sdk }}"]
 
