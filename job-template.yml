@@ -1,6 +1,8 @@
 # To be able to use template expressions in variable sections, it seems we can't use
 # a step template, because we can't actually put a variables section in at the top.
 # So we need to make a whole job template.
+# Actually, is that true, or is it just that I hit the "Mapping values not allowed"
+# error and initially misunderstood it?
 
 parameters:
 - name: runtimes
@@ -24,9 +26,9 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
 
   variables:
-    - ${{ if parameters.sdks }}
+    ${{ if parameters.sdks }}:
       sdkList: ${{ parameters.sdks }}
-    - ${{ if parameters.sdk }}
+    ${{ if parameters.sdk }}:
       sdkList: [${{ parameters.sdks }}]
 
   steps:
