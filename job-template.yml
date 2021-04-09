@@ -47,10 +47,10 @@ jobs:
     env:
       c1: ${{ and(parameters.sdks, ge(length(parameters.sdks), 0)) }}
       c2: ${{ not(and(parameters.sdks, ge(length(parameters.sdks), 0))) }}
-      r1: ${{ parameters.runtimes }}
-      r2: "${{ parameters.runtimes }}"
-      r3: '[${{ parameters.runtimes }}]'
-      r4: '["${{ parameters.runtimes }}"]'
+      r1: ${{ join(',', parameters.runtimes) }}
+      r2: "${{ join(',', parameters.runtimes) }}"
+      r3: '[${{ join(',', parameters.runtimes) }}]'
+      r4: '["${{ join(',', parameters.runtimes) }}"]'
       t1: ${{ parameters.sdk }}
       t2: "${{ parameters.sdk }}"
       t3: '[${{ parameters.sdk }}]'
