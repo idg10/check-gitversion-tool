@@ -20,22 +20,26 @@ jobs:
     vmImage: 'windows-latest'
 
   steps:
-  - task: UseDotNet@2
-    inputs:
-      packageType: 'runtime'
-      version: '3.1.x'
+  - template: templates/install-net-runtimes-and-sdks.yaml
+    parameters:
+      runtimes: [2.1.x, 3.1.x]
+      sdks: [5.x]
+  # - task: UseDotNet@2
+  #   inputs:
+  #     packageType: 'runtime'
+  #     version: '3.1.x'
 
-  - task: UseDotNet@2
-    displayName: 'Install .NET Core SDK 5.x'
-    inputs:
-      packageType: sdk
-      version: 5.x
-      installationPath: $(Agent.ToolsDirectory)/dotnet  
+  # - task: UseDotNet@2
+  #   displayName: 'Install .NET Core SDK 5.x'
+  #   inputs:
+  #     packageType: sdk
+  #     version: 5.x
+  #     installationPath: $(Agent.ToolsDirectory)/dotnet  
 
-  - powershell: |
-      nuget sources
-      dotnet --info
-    displayName: 'NuGet sources 2'
+  # - powershell: |
+  #     nuget sources
+  #     dotnet --info
+  #   displayName: 'NuGet sources 2'
 
   # - powershell: |
   #     Get-ChildItem $HOME -r

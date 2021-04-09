@@ -1,0 +1,28 @@
+parameters:
+- name: runtimes
+  type: object
+  default:
+  - 3.1.x
+- name: sdks
+  type: object
+  default:
+  - 5.x
+
+steps:
+- ${{ each runtimeVersion in parameters.runtimes }}:
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'runtime'
+      version: '${{ runtimeVersion }}'
+
+- ${{ each sdkVersion in parameters.runtimes }}:
+  - task: UseDotNet@2
+    displayName: 'Install .NET Core SDK 5.x'
+    inputs:
+      packageType: sdk
+      version: '${{ sdkVersion }}'
+
+- powershell: |
+    nuget sources
+    dotnet --info
+  displayName: 'Ensure NuGet initializes sources'
