@@ -20,7 +20,7 @@ jobs:
     vmImage: 'windows-latest'
 
   steps:
-  - template: templates/install-net-runtimes-and-sdks.yaml
+  - template: install-net-runtimes-and-sdks.yaml
     parameters:
       runtimes: [2.1.x, 3.1.x]
       sdks: [5.x]
