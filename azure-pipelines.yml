@@ -20,6 +20,6 @@ jobs:
     vmImage: 'windows-latest'
     #vmImage: 'ubuntu-latest'
     solution_to_build: 'Solutions/CheckGitversion.sln'
-    runtimes: [2.1.x, 3.1.x]
-    sdks: [3.x, 5.x]
+    #runtimes: [2.1.x, 3.1.x]
+    #sdks: [3.x, 5.x]
     #sdk: 5.x
