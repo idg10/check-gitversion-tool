@@ -33,6 +33,8 @@ jobs:
 
   steps:
   - powershell: |
+      write-host $env:c1
+      write-host $env:c2
       write-host ${{ parameters.runtimes }}
       write-host $env:r1
       write-host $env:r2
@@ -44,14 +46,16 @@ jobs:
       write-host $env:t3
       write-host $env:t4
     env:
-        r1: ${{ parameters.runtimes }}
-        r2: "${{ parameters.runtimes }}"
-        r3: '[${{ parameters.runtimes }}]'
-        r4: '["${{ parameters.runtimes }}"]'
-        t1: ${{ parameters.sdk }}
-        t2: "${{ parameters.sdk }}"
-        t3: '[${{ parameters.sdk }}]'
-        t4: '["${{ parameters.sdk }}"]'
+      c1: ${{ and(parameters.sdks, ge(length(parameters.sdks), 0)) }}
+      c2: ${{ not(and(parameters.sdks, ge(length(parameters.sdks), 0))) }}
+      r1: ${{ parameters.runtimes }}
+      r2: "${{ parameters.runtimes }}"
+      r3: '[${{ parameters.runtimes }}]'
+      r4: '["${{ parameters.runtimes }}"]'
+      t1: ${{ parameters.sdk }}
+      t2: "${{ parameters.sdk }}"
+      t3: '[${{ parameters.sdk }}]'
+      t4: '["${{ parameters.sdk }}"]'
     displayName: 'Dump parameters'
 
   - template: install-net-runtimes-and-sdks.yml
@@ -61,7 +65,7 @@ jobs:
       ${{ if and(parameters.sdks, ge(length(parameters.sdks), 0)) }}:
         sdks: ${{ parameters.sdks }}
       ${{ if not(and(parameters.sdks, ge(length(parameters.sdks), 0))) }}:
-        sdks: [${{ parameters.sdk }}]
+        sdks: ["${{ parameters.sdk }}"]
 
 
   - task: DotNetCoreCLI@2
