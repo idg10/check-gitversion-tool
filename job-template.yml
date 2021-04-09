@@ -37,8 +37,6 @@ jobs:
       write-host $env:c2
       write-host $env:r1
       write-host $env:r2
-      write-host $env:r3
-      write-host $env:r4
       write-host ${{ parameters.sdk }}
       write-host $env:t1
       write-host $env:t2
@@ -49,8 +47,6 @@ jobs:
       c2: ${{ not(and(parameters.sdks, ge(length(parameters.sdks), 0))) }}
       r1: ${{ join(',', parameters.runtimes) }}
       r2: "${{ join(',', parameters.runtimes) }}"
-      r3: '[${{ join(\',\', parameters.runtimes) }}]'
-      r4: '["${{ join(\',\', parameters.runtimes) }}"]'
       t1: ${{ parameters.sdk }}
       t2: "${{ parameters.sdk }}"
       t3: '[${{ parameters.sdk }}]'
