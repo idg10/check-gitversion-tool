@@ -10,6 +10,11 @@ parameters:
 
 
 steps:
+- powershell: |
+    write-host ${{ parameters.runtimes }}
+    write-host ${{ parameters.sdks  }}
+  displayName: 'Dump parameters'
+
 - ${{ each runtimeVersion in parameters.runtimes }}:
   - task: UseDotNet@2
     displayName: 'Install .NET runtime ${{ runtimeVersion }}'
