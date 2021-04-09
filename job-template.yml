@@ -42,7 +42,7 @@ jobs:
         t1: ${{ parameters.sdk }}
         t2: "${{ parameters.sdk }}"
         t3: '[${{ parameters.sdk }}]'
-        t3: '["${{ parameters.sdk }}"]'
+        t4: '["${{ parameters.sdk }}"]'
     displayName: 'Dump parameters'
 
   - template: install-net-runtimes-and-sdks.yml
