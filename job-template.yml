@@ -43,8 +43,8 @@ jobs:
       write-host $env:t3
       write-host $env:t4
     env:
-      c1: ${{ and(parameters.sdks, ge(length(parameters.sdks), 0)) }}
-      c2: ${{ not(and(parameters.sdks, ge(length(parameters.sdks), 0))) }}
+      c1: ${{ and(parameters.sdks, gt(length(parameters.sdks), 0)) }}
+      c2: ${{ not(and(parameters.sdks, gt(length(parameters.sdks), 0))) }}
       r1: ${{ join(',', parameters.runtimes) }}
       r2: "${{ join(',', parameters.runtimes) }}"
       t1: ${{ parameters.sdk }}
@@ -57,9 +57,9 @@ jobs:
     parameters:
       runtimes: ${{ parameters.runtimes }}
 #      sdks: ${{ variables.sdkList }}
-      ${{ if and(parameters.sdks, ge(length(parameters.sdks), 0)) }}:
+      ${{ if and(parameters.sdks, gt(length(parameters.sdks), 0)) }}:
         sdks: ${{ parameters.sdks }}
-      ${{ if not(and(parameters.sdks, ge(length(parameters.sdks), 0))) }}:
+      ${{ if not(and(parameters.sdks, gt(length(parameters.sdks), 0))) }}:
         sdks: ["${{ parameters.sdk }}"]
 
 
