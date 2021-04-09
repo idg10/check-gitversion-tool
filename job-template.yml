@@ -5,6 +5,8 @@
 # error and initially misunderstood it?
 
 parameters:
+- name: solution_to_build
+  type: string
 - name: runtimes
   type: object
   default:
@@ -26,9 +28,15 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
 
   variables:
-     SolutionToBuild: Solutions/CheckGitversion.sln
+     SolutionToBuild: ${{ parameters.solution_to_build }}
      BuildConfiguration: Release
 
+  # Can't do this because apparently arrays aren't properly supported.
+  # You can use them in ${{}} style expressions because they are a thing
+  # during template invocation and build plan generation, but once the
+  # build is actually running (which is the case by the time variables are
+  # being initialized) arrays aren't really supported except for cases
+  # where Azure DevOps passes something in as an array.
   # variables:
   #   ${{ if and(parameters.sdks, ge(length(parameters.sdks), 0)) }}:
   #     sdkList: $[ parameters.sdks ]
@@ -55,12 +63,33 @@ jobs:
       t2: "${{ parameters.sdk }}"
       t3: '[${{ parameters.sdk }}]'
       t4: '["${{ parameters.sdk }}"]'
-    displayName: 'Dump parameters'
+    displayName: 'Dump job-template parameters'
 
+  # This does the magic trick of enabling us to support either a scalar template parameter:
+  #   sdk: 5.x
+  # or a list:
+  #   sdks: [3.x, 5.x]
+  # This all needs to be managed through the templating system, because that's the only
+  # thing that really supports arrays.
+  # The way this works is that the install-net-runtimes-and-sdks.yml template works entirely
+  # with array inputs - it requires two inputs, "runtimes" and "sdks", and it requires both
+  # of these to be arrays. But to enable consumers of this build infrastructure to specify
+  # just a single SDK (which is all that endjin's recommended practice templates used to support)
+  # this top-level template allows you to pass either an array or a single SDK version, as shown
+  # above
+  # The basic logic here is simple. If parameters.sdks is present and non-empty, we pass
+  # that. Otherwise, we build a new single-entry array containing parameters.sdk. (The tricksy
+  # thing about this is that although we can pass the parmeters.sdks array through unmodified,
+  # apparently when we wrap a singular parameters.sdk as an array, it doesn't work unless we
+  # also wrap it in quotes. This is a bit weird because when you're not using variables, an
+  # unquoted form of [5.x] works perfectly well. I guess this has something do to with exactly
+  # where the YAML processing (which essentially applies quotes in some situations where its
+  # rules say they are implied) fits in with relation to the ${{}} template expression expansion.
+  # My guess is that in our "wrap it in an array" expression, we've missed our chance to have
+  # the YAML parser add the quotes in for us by the time the expression gets expanded.)
   - template: install-net-runtimes-and-sdks.yml
     parameters:
       runtimes: ${{ parameters.runtimes }}
-#      sdks: ${{ variables.sdkList }}
       ${{ if and(parameters.sdks, gt(length(parameters.sdks), 0)) }}:
         sdks: ${{ parameters.sdks }}
       ${{ if not(and(parameters.sdks, gt(length(parameters.sdks), 0))) }}:
@@ -93,11 +122,3 @@ jobs:
       command: 'test'
       projects: $(SolutionToBuild)
       arguments: '-c $(BuildConfiguration) --no-build --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
-
-# - template: templates/build.and.release.yml@recommended_practices
-#   parameters:
-#     vmImage: 'windows-latest'
-#     service_connection_nuget_org: $(Idg10_Service_Connection_NuGet_Org)
-#     service_connection_github: $(Idg10_Service_Connection_GitHub)
-#     solution_to_build: $(Idg_Solution_To_Build)
-#     netSdkVersion: '3.x'

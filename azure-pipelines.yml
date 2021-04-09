@@ -15,23 +15,11 @@ resources:
       endpoint: github.com_idg10
 
 jobs:
-# - job: Build
-#   pool:
-#     vmImage: 'windows-latest'
-
-#   variables:
-#     SolutionToBuild: Solutions/CheckGitversion.sln
-#     BuildConfiguration: Release
-
-#   steps:
-#   - template: install-net-runtimes-and-sdks.yml
-#     parameters:
-#       runtimes: [2.1.x, 3.1.x]
-#       sdk: 5.x
-#
 - template: job-template.yml
   parameters:
-    vmImage: 'ubuntu-latest'
+    vmImage: 'windows-latest'
+    #vmImage: 'ubuntu-latest'
+    solution_to_build: 'Solutions/CheckGitversion.sln'
     runtimes: [2.1.x, 3.1.x]
     sdks: [3.x, 5.x]
     #sdk: 5.x
