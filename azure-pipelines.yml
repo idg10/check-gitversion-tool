@@ -19,6 +19,9 @@ jobs:
   pool:
     vmImage: 'windows-latest'
 
+  variables:
+    SolutionToBuild: Solutions/CheckGitversion.sln
+
   steps:
   - template: install-net-runtimes-and-sdks.yml
     parameters:
@@ -35,6 +38,23 @@ jobs:
   - script: 'dotnet-gitversion /output buildserver /nofetch'
     name: 'RunGitVersion'
     displayName: 'Run GitVersion'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore & Build'
+    inputs:
+      command: 'build'
+      projects: $(SolutionToBuild)
+      arguments: '--configuration $(BuildConfiguration) /p:Version=$(GitVersion.SemVer)'
+      #versioningScheme: byBuildNumber
+      #buildProperties: 'EndjinRepositoryUrl="$(Build.Repository.Uri)"'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run Executable Specifications'
+    inputs:
+      command: 'test'
+      projects: $(SolutionToBuild)
+      arguments: '-c $(BuildConfiguration) --no-build --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+
 # - template: templates/build.and.release.yml@recommended_practices
 #   parameters:
 #     vmImage: 'windows-latest'
