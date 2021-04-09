@@ -24,9 +24,9 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
 
   variables:
-    ${{ if parameters.sdks }}
+    - ${{ if parameters.sdks }}
       sdkList: ${{ parameters.sdks }}
-    ${{ if parameters.sdk }}
+    - ${{ if parameters.sdk }}
       sdkList: [${{ parameters.sdks }}]
 
   steps:
