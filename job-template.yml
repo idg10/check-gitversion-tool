@@ -25,6 +25,9 @@ jobs:
   pool:
     vmImage: ${{ parameters.vmImage }}
 
+   variables:
+     SolutionToBuild: Solutions/CheckGitversion.sln
+
   # variables:
   #   ${{ if and(parameters.sdks, ge(length(parameters.sdks), 0)) }}:
   #     sdkList: $[ parameters.sdks ]
