@@ -21,6 +21,7 @@ jobs:
 
   variables:
     SolutionToBuild: Solutions/CheckGitversion.sln
+    BuildConfiguration: Release
 
   steps:
   - template: install-net-runtimes-and-sdks.yml
