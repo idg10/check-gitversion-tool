@@ -11,8 +11,8 @@ parameters:
 
 steps:
 - powershell: |
-    write-host ${{ parameters.runtimes }}
-    write-host ${{ parameters.sdks  }}
+    write-host ${{ join(',', parameters.runtimes) }}
+    write-host ${{ join(',', parameters.sdks) }}
   displayName: 'Dump parameters'
 
 - ${{ each runtimeVersion in parameters.runtimes }}:
