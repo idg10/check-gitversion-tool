@@ -1,0 +1,71 @@
+# To be able to use template expressions in variable sections, it seems we can't use
+# a step template, because we can't actually put a variables section in at the top.
+# So we need to make a whole job template.
+
+parameters:
+- name: runtimes
+  type: object
+  default:
+  - 3.1.x
+- name: sdks
+  type: object
+  default: []
+- name: sdk
+  type: string
+  default: "5.x"
+- name: vmImage
+  type: string
+  default: ""
+
+
+jobs:
+- job: Build
+  pool:
+    vmImage: ${{ parameters.vmImage }}
+
+  variables:
+    ${{ if parameters.sdks }}
+      sdkList: ${{ parameters.sdks }}
+    ${{ if parameters.sdk }}
+      sdkList: [${{ parameters.sdks }}]
+
+  steps:
+  - template: install-net-runtimes-and-sdks.yml
+    parameters:
+      runtimes: ${{ parameters.runtimes }}
+      sdk: ${{ sdkList }}
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Install GitVersion (Global Tools Linux Build Agent Workaround)'
+    inputs:
+      command: custom
+      custom: 'tool'
+      arguments: 'install -g GitVersion.Tool --version 5.6.6'
+
+  - script: 'dotnet-gitversion /output buildserver /nofetch'
+    name: 'RunGitVersion'
+    displayName: 'Run GitVersion'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore & Build'
+    inputs:
+      command: 'build'
+      projects: $(SolutionToBuild)
+      arguments: '--configuration $(BuildConfiguration) /p:Version=$(GitVersion.SemVer)'
+      #versioningScheme: byBuildNumber
+      #buildProperties: 'EndjinRepositoryUrl="$(Build.Repository.Uri)"'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run Executable Specifications'
+    inputs:
+      command: 'test'
+      projects: $(SolutionToBuild)
+      arguments: '-c $(BuildConfiguration) --no-build --no-restore /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+
+# - template: templates/build.and.release.yml@recommended_practices
+#   parameters:
+#     vmImage: 'windows-latest'
+#     service_connection_nuget_org: $(Idg10_Service_Connection_NuGet_Org)
+#     service_connection_github: $(Idg10_Service_Connection_GitHub)
+#     solution_to_build: $(Idg_Solution_To_Build)
+#     netSdkVersion: '3.x'

@@ -5,10 +5,8 @@ parameters:
   - 3.1.x
 - name: sdks
   type: object
-  default: []
-- name: sdk
-  type: string
-  default: "5.x"
+  default:
+  - 5.x
 
 
 steps:
@@ -21,11 +19,6 @@ steps:
 
 - ${{ each sdkVersion in variables.sdkList }}:
   - task: UseDotNet@2
-    variables:
-      ${{ if parameters.sdks }}
-        sdkList: ${{ parameters.sdks }}
-      ${{ if parameters.sdk }}
-        sdkList: [${{ parameters.sdks }}]
     displayName: 'Install .NET Core SDK ${{ sdkVersion }}'
     inputs:
       packageType: sdk
